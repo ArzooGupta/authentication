@@ -1,0 +1,21 @@
+const express = require('express');
+const app = express();
+const path = require('path');
+const io = require('../io.js');
+const http = require('http');
+
+app.use(function(req, res, next) {
+	console.log('hi');
+res.header("Access-Control-Allow-Origin", "*");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, content-yype, Accept");
+next();
+});
+
+app.use(require('cookie-parser')());
+app.use('/api/v1', require(path.join(__dirname, '..', 'api')));
+
+const server = http.createServer(app);
+io(server);
+server.listen(9080, () => {
+	console.log('Express server started');
+});
